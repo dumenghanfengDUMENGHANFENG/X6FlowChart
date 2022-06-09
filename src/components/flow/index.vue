@@ -1,14 +1,13 @@
 <template>
   <div class="wrap" :style="{ width: width, height: height }">
     <!-- 左侧工具栏 -->
-    <div class="leftDrag" id="flowStencil" v-if="editIsSHow"/>
+    <div class="leftDrag" id="flowStencil" v-if="editIsSHow" />
     <!-- 中间画布 -->
-    <div class="middleCanvas" id="flowContainer" />
+    <div class="middleCanvas" ref="flowContainer" id="flowContainer" />
     <!--右侧工具栏-->
-    <config-panel :editIsSHow="editIsSHow"/>
+    <config-panel :editIsSHow="editIsSHow" />
   </div>
 </template>
-
 <script>
 import FlowGraph from './js'
 import ConfigPanel from './configPanel/index'
@@ -19,8 +18,8 @@ export default {
     ConfigPanel
   },
   props: {
-    editIsSHow:{
-      typeof:Boolean
+    editIsSHow: {
+      typeof: Boolean
     }
   },
   data() {
@@ -36,24 +35,20 @@ export default {
     if (FlowData == null) {
       FlowData = []
     }
-    FlowGraph.init(this.width, this.height,this.editIsSHow) // 渲染画布
+    FlowGraph.init(this.width, this.height, this.editIsSHow) // 渲染画布
     FlowGraph.initGraphShape(FlowData) // 数据回填
-    //  倒计时修改回填数据
-    // var Date1 = setTimeout(function () {
-    //   graphData.cells[0].labels[0].attrs.label.text = "修改"
-    //   FlowGraph.initGraphShape(graphData) // 数据回填
-    // }, 5000)  // 1秒后执行打印功能
+
     // 监听页面跨高变化
-    let that = this
+    // let that = this
     // 监控宽高
-    window.onresize = () => {
-      return (() => {
-        FlowGraph.destroy()//卸载画布
-        that.getContainerSize();
-        FlowGraph.init(that.width, that.height,this.editIsSHow)
-        FlowGraph.initGraphShape(FlowData) // 数据回填
-      })();
-    };
+    // window.onresize = () => {
+    //   return (() => {
+    //     FlowGraph.destroy()//卸载画布
+    //     that.getContainerSize();
+    //     FlowGraph.init(that.width, that.height, this.editIsSHow)
+    //     FlowGraph.initGraphShape(FlowData) // 数据回填
+    //   })();
+    // };
   },
   created() {
     this.getContainerSize()

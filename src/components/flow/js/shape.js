@@ -1,15 +1,19 @@
 // 节点样式设置
-import { Graph } from "@antv/x6";
+import {
+  Graph
+} from "@antv/x6";
 const widthNode = 200;
 const heightNode = 34;
 // 连接桩样式
 const groupsObj = {
   customPorts: {
-    position: { name: "absolute" },
+    position: {
+      name: "absolute"
+    },
     attrs: {
       circle: {
         r: 4,
-        magnet: true,//交互是否可连
+        magnet: true, //交互是否可连
         stroke: "#5F95FF",
         strokeWidth: 1,
         fill: "#fff",
@@ -33,29 +37,43 @@ export const basicsNode = Graph.registerNode("basicsNode", {
   },
   ports: {
     groups: groupsObj,
-    items: [
-      {
+    items: [{
         id: "top",
         group: "customPorts",
-        args: { x: "50%", y: 0 },
+        args: {
+          x: "50%",
+          y: 0
+        },
       },
       {
         id: "bottom",
         group: "customPorts",
-        args: { x: "50%", y: 68 },
+        args: {
+          x: "50%",
+          y: 68
+        },
       },
       {
         id: "left",
         group: "customPorts",
-        args: { x: 0, y: 34 },
+        args: {
+          x: 0,
+          y: 34
+        },
       },
       {
         id: "right",
         group: "customPorts",
-        args: { x: "100%", y: 34 },
+        args: {
+          x: "100%",
+          y: 34
+        },
       },
     ],
   },
+  storage: {
+    title: ''
+  }
 });
 export const twoStageNode = Graph.registerNode("twoStageNode", {
   inherit: "rect",
@@ -67,6 +85,9 @@ export const twoStageNode = Graph.registerNode("twoStageNode", {
     groups: groupsObj,
     items: portsItems(3),
   },
+  storage: {
+    title: ''
+  }
 });
 // 获取attrs
 function attrsObtain(num) {
@@ -89,6 +110,16 @@ function attrsObtain(num) {
         ellipsis: true, // 文本超出显示范围时，自动添加省略号
         breakWord: true, // 是否截断单词
       },
+    },
+    // 最外层选中
+    head0: {
+      x: -15,
+      y: -15,
+      stroke: "rgba(95,149,255,0.00)",
+      fill: "rgba(95,149,255,0.00)",
+      strokeDasharray: 5,
+      refWidth: 30,
+      height: num * heightNode + 30,
     },
   };
   for (let i = 1; i < num + 1; i++) {
@@ -125,7 +156,11 @@ function attrsObtain(num) {
 }
 // 获取 markup
 function markupObtain(num) {
-  const headList = [];
+  const headList = [{
+    tagName: "rect",
+    selector: "head0",
+    groupSelector: "commonStyle"
+  }, ];
   const textList = [];
   for (let i = 1; i < num + 1; i++) {
     headList.push({
@@ -150,26 +185,35 @@ function portsItems(num) {
     leftList.push({
       id: `left${i}`,
       group: "customPorts",
-      args: { x: 0, y: heightNode / 2 + heightNode * i },
+      args: {
+        x: 0,
+        y: heightNode / 2 + heightNode * i
+      },
     });
     rightList.push({
       id: `right${i}`,
       group: "customPorts",
-      args: { x: "100%", y: heightNode / 2 + heightNode * i },
+      args: {
+        x: "100%",
+        y: heightNode / 2 + heightNode * i
+      },
     });
   }
   const portsItemsList = leftList.concat(rightList);
-  portsItemsList.unshift(
-    {
-      id: "top",
-      group: "customPorts",
-      args: { x: "50%", y: 0 },
+  portsItemsList.unshift({
+    id: "top",
+    group: "customPorts",
+    args: {
+      x: "50%",
+      y: 0
     },
-    {
-      id: "bottom",
-      group: "customPorts",
-      args: { x: "50%", y: num * heightNode },
-    }
-  );
+  }, {
+    id: "bottom",
+    group: "customPorts",
+    args: {
+      x: "50%",
+      y: num * heightNode
+    },
+  });
   return portsItemsList;
 }

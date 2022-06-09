@@ -45,7 +45,7 @@ export default class FlowGraph {
         multiple: true,
         rubberband: editIsSHow, //框选
         movable: true,
-        showNodeSelectionBox: true,
+        showNodeSelectionBox: false, //节点选择框
       },
       // 连接线
       connecting: {
@@ -55,11 +55,12 @@ export default class FlowGraph {
         highlight: true,
         snap: true, //自动吸附
         createEdge() {
+          //新的连接线
           return new Shape.Edge({
             attrs: {
               line: {
                 stroke: "#5F95FF",
-                strokeWidth: 1, //线条宽度
+                strokeWidth: 2, //线条宽度
                 targetMarker: {
                   //箭头
                   name: "classic",
@@ -70,7 +71,7 @@ export default class FlowGraph {
             router: {
               name: "manhattan",
             },
-            zIndex: 0,
+            zIndex: 10
           });
         },
         validateConnection({
@@ -109,11 +110,22 @@ export default class FlowGraph {
         enabled: true,
         resizing: true,
       },
+      //撤销
+      history: true,
+      //剪切板
+      clipboard: {
+        enabled: true,
+      },
+      //键盘快捷键
+      keyboard: {
+        enabled: true,
+      },
       // 是否允许调整大小
       resizing: {
         enabled: editIsSHow,
       },
     });
+
     if (editIsSHow) {
       this.initStencil(); // 左侧选择标题拖拽
       this.initShape(); //左侧选择节点导入
@@ -167,21 +179,6 @@ export default class FlowGraph {
   // 节点操作
   static initEvent() {
     const { graph } = this;
-    const container = document.getElementById("flowContainer");
-    // 鼠标进入节点
-    graph.on(
-      "node:mouseenter",
-      FunctionExt.debounce(() => {
-        const ports = container.querySelectorAll(".x6-port-body");
-        this.showPorts(ports, true);
-      }),
-      500
-    );
-    // 鼠标离开节点
-    graph.on("node:mouseleave", ({ cell, view }) => {
-      const ports = container.querySelectorAll(".x6-port-body");
-      this.showPorts(ports, false);
-    });
     graph.bindKey("backspace", () => {
       const cells = graph.getSelectedCells();
       if (cells.length) {

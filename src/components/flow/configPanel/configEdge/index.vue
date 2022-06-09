@@ -48,6 +48,11 @@
           @change="handleChangeRotate"
         />
       </a-form-item>
+      <!-- <a-form-item label="标签拖动">
+        <a-switch default-checked v-model="globalNodeAttr.drag" @change="onChange" />
+        <div class="drag" v-show="!globalNodeAttr.drag">开启后,线条将自由拖动</div>
+        <div class="drag" v-show="globalNodeAttr.drag">关闭后,线条将回归最初位置</div>
+      </a-form-item>-->
     </a-form>
     <div class="submit">
       <a-button type="danger" @click="reset">取消</a-button>
@@ -76,7 +81,8 @@ export default {
         lineSelection: 'rounded',
         lineText: '',
         lineTextStyle: '0.5',
-        lineTextStyleRotate: '0'
+        lineTextStyleRotate: '0',
+        drag: false
       }
     }
   },
@@ -117,7 +123,8 @@ export default {
         }
       ]
       )
-      this.$emit('configClick')
+      // this.curEdge.removeTools();  //清除工具集
+      this.$emit('configClick', 'edge')
     },
     // 处理
     nodeOpt(id) {
@@ -174,9 +181,10 @@ export default {
     colorClick(item) {
       this.globalNodeAttr.attrsLineColor = item
     },
-    // 重置
+    // 取消
     reset() {
-      this.$emit('configClick')
+      // this.curEdge.removeTools();
+      this.$emit('configClick', 'edge')
     }
   }
 }
@@ -191,6 +199,11 @@ export default {
   height: 32px !important;
   border-radius: 4px;
   border: 1px solid #000000;
+}
+
+.ant-form-item-children {
+  display: flex;
+  flex-wrap: wrap;
 }
 .m-colorPicker .box.open {
   margin-left: -25px;
@@ -209,6 +222,11 @@ export default {
   }
   .colorPicker {
     width: 100%;
+  }
+  .drag {
+    color: red;
+    text-align: left;
+    line-height: 20px;
   }
 }
 </style>
