@@ -1,8 +1,7 @@
 # demo
 
 ## Project setup
-```
-npm install
+```ddd
 ```
 2
 ### Compiles and hot-reloads for development
